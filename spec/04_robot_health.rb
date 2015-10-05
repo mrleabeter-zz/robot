@@ -59,13 +59,20 @@ describe Robot do
 
     it "raise HealError if robot health is at or below 0" do
       @robot.wound(100)
-      expect { @robot.heal!(20) }.to raise_error(HealError, "Robot can not be healed - it is dead.")
+      expect{ @robot.heal!(20) }.to raise_error(HealError, "Robot can not be healed - it is dead.")
     end
   end
 
   describe "#attack!" do
-    it "statement" do
+    it "wounds enemy robot with default attack power" do
+      enemy_robot = Robot.new
+      expect(enemy_robot).to receive(:wound).with(5)
+      @robot.attack!(enemy_robot)
+    end
 
+    it "raise AttackError when enemy is not a robot" do
+      enemy = BoxOfBolts.new
+      expect{@robot.attack!(enemy) }.to raise_error(AttackError, "Your enemy is not a robot - you can only attack a robot.")
     end
   end
 end
