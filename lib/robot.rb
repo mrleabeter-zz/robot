@@ -23,18 +23,22 @@ class Robot
 
   def move_left
     @position[0] -= 1
+    @position
   end
 
   def move_right
     @position[0] += 1
+    @position
   end
 
   def move_up
     @position[1] += 1
+    @position
   end
 
   def move_down
     @position[1] -= 1
+    @position
   end
 
   def pick_up(item)
@@ -63,11 +67,19 @@ class Robot
     end
   end
 
+  def within_attack_range?(enemy)
+    x, y = self.position
+    range_array = [[x, y - 1], [x, y + 1], [x - 1, y], [x + 1, y]]
+    range_array.include?(enemy.position)
+  end
+
   def attack(enemy)
-    if equipped_weapon == nil
-      enemy.wound(DEFAULT_ATTACK_STRENGTH)
-    else
-      equipped_weapon.hit(enemy)
+    if within_attack_range?(enemy)
+      if equipped_weapon == nil
+        enemy.wound(DEFAULT_ATTACK_STRENGTH)
+      else
+        equipped_weapon.hit(enemy)
+      end
     end
   end
 
